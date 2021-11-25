@@ -11,7 +11,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.all(30.0),
       child: Form(
         child: Column(children: [
           _emailField(),
@@ -23,7 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _emailField() {
-    return TextFormField();
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(labelText: 'Email Address',
+      hintText: 'you@example.com',
+      ),
+    );
   }
 
   Widget _passwordField() {
