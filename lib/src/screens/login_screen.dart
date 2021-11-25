@@ -12,7 +12,28 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20.0),
-      child: const Text('Login Screen'),
+      child: Form(
+        child: Column(children: [
+          _emailField(),
+          _passwordField(),
+          _submitButton(),
+        ]),
+      ),
+    );
+  }
+
+  Widget _emailField() {
+    return TextFormField();
+  }
+
+  Widget _passwordField() {
+    return TextFormField();
+  }
+
+  Widget _submitButton() {
+    return TextButton(
+      onPressed: () {},
+      child: const Text('Submit'),
     );
   }
 }
