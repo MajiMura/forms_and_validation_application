@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
             bottom: 25.0,
           ),
         ),
-        _submitButton(),
+        _submitButton(bloc),
       ]),
     );
   }
@@ -52,11 +52,16 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _submitButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.blue),
-      onPressed: () {},
-      child: const Text('Submit'),
+  Widget _submitButton(Bloc bloc) {
+    return StreamBuilder(
+      stream: bloc.submitValidation,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.blue),
+          onPressed: snapshot.data == true ? bloc.submit : null,
+          child: const Text('Submit'),
+        );
+      },
     );
   }
 }
