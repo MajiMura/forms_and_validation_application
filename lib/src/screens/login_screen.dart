@@ -1,75 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:forms_and_validation_appli/src/mixins/validation_mixin.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import '../blocs/bloc.dart';
 
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> with ValidationMixin {
-  final formKey = GlobalKey<FormState>();
-  String? email = '';
-  String? password = '';
+class LoginScreen extends StatelessWidget {
+  LoginScreen({Key? key}) : super(key: key);
+  final Bloc bloc = Bloc();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(30.0),
-      child: Form(
-        key: formKey,
-        child: Column(children: [
-          _emailField(),
-          _passwordField(),
-          Container(
-            margin: const EdgeInsets.only(
-              bottom: 25.0,
-            ),
+      child: Column(children: [
+        _emailField(),
+        _passwordField(),
+        Container(
+          margin: const EdgeInsets.only(
+            bottom: 25.0,
           ),
-          _submitButton(),
-        ]),
-      ),
+        ),
+        _submitButton(),
+      ]),
     );
   }
 
   Widget _emailField() {
-    return TextFormField(
-      validator: validateEmail,
-      onSaved: (value) {
-        email = value;
+    return StreamBuilder(
+      stream: bloc.email,
+      builder: (context, snapshot) {
+        return TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              errorText: snapshot.error?.toString(), hintText: 'you@example.com', labelText: 'Email Address'),
+          onChanged: bloc.changeEmail,
+        );
       },
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        labelText: 'Email Address',
-        hintText: 'you@example.com',
-      ),
     );
   }
 
   Widget _passwordField() {
-    return TextFormField(
-      validator: validatePassword,
-      onSaved: (value) {
-        password = value;
+    return StreamBuilder(
+      stream: bloc.password,
+      builder: (context, snapshot) {
+        return TextField(
+          obscureText: true,
+          decoration:
+              InputDecoration(errorText: snapshot.error?.toString(), hintText: 'Password', labelText: 'Password'),
+          onChanged: bloc.changePassword,
+        );
       },
-      obscureText: true,
-      decoration: const InputDecoration(
-        labelText: 'Password',
-        hintText: 'Password',
-      ),
     );
   }
 
   Widget _submitButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(primary: Colors.blue),
-      onPressed: () {
-        if(formKey.currentState != null && formKey.currentState!.validate()) {
-          formKey.currentState!.save();
-          print('Time to post email: $email and password: $password to my API.');
-        }
-      },
+      onPressed: () {},
       child: const Text('Submit'),
     );
   }
